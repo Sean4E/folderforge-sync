@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "Bash(start http://localhost:5173)",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run generate-icons:*)",
+      "Bash(npm run build:win:*)",
+      "Bash(taskkill:*)",
+      "Bash(copy \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\desktop\\\\dist\\\\FolderForge Sync Setup 1.0.0.exe\" \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\webapp\\\\public\\\\downloads\\\\FolderForge-Sync-Setup-Windows.exe\")",
+      "Bash(copy \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\desktop\\\\dist\\\\FolderForge Sync 1.0.0.exe\" \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\webapp\\\\public\\\\downloads\\\\FolderForge-Sync-Portable-Windows.exe\")",
+      "Bash(cmd /c copy \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\desktop\\\\dist\\\\FolderForge Sync Setup 1.0.0.exe\" \"c:\\\\Users\\\\4edes\\\\Documents\\\\4E_Docs\\\\4E_HTML\\\\FolderStructure_v3\\\\webapp\\\\public\\\\downloads\\\\FolderForge-Sync-Setup-Windows.exe\")",
+      "Bash(cmd /c copy:*)",
+      "Bash(git init:*)",
+      "Bash(git reset:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)"
+    ]
+  }
+}

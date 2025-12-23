@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FolderForge Sync - Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #09090b 0%, #18181b 50%, #09090b 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #34d399, #06b6d4);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: white;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .logo-text h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .logo-text p {
+      font-size: 11px;
+      color: #71717a;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #a1a1aa;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #a1a1aa;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    input::placeholder {
+      color: #52525b;
+    }
+
+    .path-input {
+      display: flex;
+      gap: 8px;
+    }
+
+    .path-input input {
+      flex: 1;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #10b981;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .status-connected {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .status-disconnected {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .status-connected .status-dot {
+      background: #34d399;
+    }
+
+    .status-disconnected .status-dot {
+      background: #f87171;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .help-text {
+      font-size: 11px;
+      color: #52525b;
+      margin-top: 6px;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .message-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .message-error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .actions .btn {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+          <path d="M12 11v6M9 14h6"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <h1>FolderForge Sync</h1>
+        <p>Desktop Agent Settings</p>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div class="card">
+      <div class="card-title">Connection Status</div>
+      <div id="status" class="status status-disconnected">
+        <div class="status-dot"></div>
+        <span id="status-text">Not connected</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Supabase Configuration</div>
+      <div class="form-group">
+        <label for="supabaseUrl">Supabase URL</label>
+        <input type="text" id="supabaseUrl" placeholder="https://your-project.supabase.co">
+        <p class="help-text">Found in: Supabase Dashboard > Project Settings > API</p>
+      </div>
+      <div class="form-group">
+        <label for="supabaseKey">Supabase Anon Key</label>
+        <input type="password" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+        <p class="help-text">The "anon public" key from your project settings</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Device Configuration</div>
+      <div class="form-group">
+        <label for="deviceToken">Device Token</label>
+        <input type="text" id="deviceToken" placeholder="Paste your device token here">
+        <p class="help-text">Get this from the web app after registering this device</p>
+      </div>
+      <div class="form-group">
+        <label for="defaultPath">Default Folder Path</label>
+        <div class="path-input">
+          <input type="text" id="defaultPath" placeholder="C:\Projects">
+          <button class="btn btn-outline" onclick="selectFolder()">Browse</button>
+        </div>
+        <p class="help-text">Where templates will be created by default</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Preferences</div>
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="launchAtStartup" checked>
+          <label for="launchAtStartup">Launch at system startup</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="showNotifications" checked>
+          <label for="showNotifications">Show notifications</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="testConnection()">Test Connection</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+
+  <script>
+    // Load existing config on page load
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const config = await window.api.getConfig();
+
+        if (config.supabaseUrl) document.getElementById('supabaseUrl').value = config.supabaseUrl;
+        if (config.supabaseKey) document.getElementById('supabaseKey').value = config.supabaseKey;
+        if (config.deviceToken) document.getElementById('deviceToken').value = config.deviceToken;
+        if (config.defaultPath) document.getElementById('defaultPath').value = config.defaultPath;
+
+        document.getElementById('launchAtStartup').checked = config.launchAtStartup !== false;
+        document.getElementById('showNotifications').checked = config.showNotifications !== false;
+
+        updateStatus(config.isOnline);
+      } catch (err) {
+        console.error('Failed to load config:', err);
+      }
+    });
+
+    function updateStatus(online) {
+      const statusEl = document.getElementById('status');
+      const statusText = document.getElementById('status-text');
+
+      if (online) {
+        statusEl.className = 'status status-connected';
+        statusText.textContent = 'Connected and syncing';
+      } else {
+        statusEl.className = 'status status-disconnected';
+        statusText.textContent = 'Not connected';
+      }
+    }
+
+    function showMessage(text, type) {
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = text;
+      messageEl.className = `message message-${type}`;
+      messageEl.style.display = 'block';
+
+      setTimeout(() => {
+        messageEl.style.display = 'none';
+      }, 5000);
+    }
+
+    async function selectFolder() {
+      try {
+        const path = await window.api.selectFolder();
+        if (path) {
+          document.getElementById('defaultPath').value = path;
+        }
+      } catch (err) {
+        console.error('Failed to select folder:', err);
+      }
+    }
+
+    async function testConnection() {
+      try {
+        // First save current settings
+        await saveSettingsInternal();
+
+        // Then test
+        const result = await window.api.testConnection();
+
+        if (result.success) {
+          updateStatus(true);
+          showMessage('Connection successful! Device authenticated.', 'success');
+        } else {
+          updateStatus(false);
+          showMessage(result.error || 'Connection failed. Please check your settings.', 'error');
+        }
+      } catch (err) {
+        showMessage('Connection test failed: ' + err.message, 'error');
+      }
+    }
+
+    async function saveSettingsInternal() {
+      const config = {
+        supabaseUrl: document.getElementById('supabaseUrl').value.trim(),
+        supabaseKey: document.getElementById('supabaseKey').value.trim(),
+        deviceToken: document.getElementById('deviceToken').value.trim(),
+        defaultPath: document.getElementById('defaultPath').value.trim(),
+        launchAtStartup: document.getElementById('launchAtStartup').checked,
+        showNotifications: document.getElementById('showNotifications').checked,
+      };
+
+      return await window.api.saveConfig(config);
+    }
+
+    async function saveSettings() {
+      try {
+        await saveSettingsInternal();
+        showMessage('Settings saved successfully!', 'success');
+      } catch (err) {
+        showMessage('Failed to save settings: ' + err.message, 'error');
+      }
+    }
+
+    // Listen for status updates from main process
+    window.api.onSyncStatus((status) => {
+      updateStatus(status.online);
+    });
+  </script>
+</body>
+</html>

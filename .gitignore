@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+webapp/dist/
+desktop/dist/
+Desktop_BUILDS/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Credentials (NEVER commit)
+**/CREDENTIALS.txt
+**/credentials.json
+**/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Downloads (large exe files)
+webapp/public/downloads/*.exe
+webapp/public/downloads/*.dmg
+webapp/public/downloads/*.AppImage
+
+# Large archives
+*.zip
+
+# Generated icons (can be regenerated)
+# webapp/public/icons/
+# desktop/assets/*.ico
+# desktop/assets/*.icns
