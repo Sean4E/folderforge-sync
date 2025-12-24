@@ -2976,25 +2976,28 @@ export default function FolderForgeSync() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="/downloads/FolderForge-Sync-Setup-1.0.0.exe"
-              download
+              href="https://github.com/Sean4E/folderforge-sync/releases/download/v1.0.0/FolderForge-Sync-Setup-Windows.exe"
               className="px-4 py-2.5 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 rounded-lg text-sm text-blue-400 flex items-center gap-2 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <Monitor size={16} /> Windows (.exe)
             </a>
             <a
-              href="/downloads/FolderForge-Sync-1.0.0.dmg"
-              download
+              href="https://github.com/Sean4E/folderforge-sync/releases/tag/v1.0.0"
               className="px-4 py-2.5 bg-zinc-500/20 hover:bg-zinc-500/30 border border-zinc-500/30 rounded-lg text-sm text-zinc-300 flex items-center gap-2 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <Laptop size={16} /> macOS (.dmg)
+              <Laptop size={16} /> macOS (coming soon)
             </a>
             <a
-              href="/downloads/FolderForge-Sync-1.0.0.AppImage"
-              download
+              href="https://github.com/Sean4E/folderforge-sync/releases/tag/v1.0.0"
               className="px-4 py-2.5 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-lg text-sm text-orange-400 flex items-center gap-2 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <Monitor size={16} /> Linux (.AppImage)
+              <Monitor size={16} /> Linux (coming soon)
             </a>
           </div>
           <p className="text-zinc-500 text-xs mt-4">
@@ -3040,7 +3043,7 @@ export default function FolderForgeSync() {
               <Menu size={20} />
             </button>
             <div className="flex items-center gap-3">
-              <img src="/favicon.svg" alt="FolderForge" className="w-12 h-12" />
+              <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="FolderForge" className="w-12 h-12" />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-white">
                   Folder<span className="text-emerald-400">Forge</span>
