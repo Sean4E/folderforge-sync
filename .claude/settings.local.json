@@ -20,7 +20,9 @@
       "Bash(git rm:*)",
       "Bash(git commit:*)",
       "Bash(gh:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(\"desktop/dist/FolderForge Sync Setup 1.0.0.exe#FolderForge-Sync-Setup-Windows.exe\" )",
+      "Bash(\"desktop/dist/FolderForge Sync 1.0.0.exe#FolderForge-Sync-Portable-Windows.exe\" )"
     ]
   }
 }
