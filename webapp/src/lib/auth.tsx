@@ -65,9 +65,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     let mounted = true;
 
+    // Listen for auth changes FIRST (before checking session)
+    // This ensures we catch the SIGNED_IN event from OAuth redirect
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
+
+        if (!mounted) return;
+
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+
+        if (session?.user) {
+          fetchProfile(session.user.id).then(profileData => {
+            if (mounted) setProfile(profileData);
+          });
+        } else {
+          setProfile(null);
+        }
+
+        // Clean up the URL hash after OAuth redirect
+        if (event === 'SIGNED_IN' && window.location.hash.includes('access_token')) {
+          // Remove the hash from URL without page reload
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      }
+    );
+
     const initializeAuth = async () => {
       try {
-        // Get the current session directly
+        // Get the current session
         const { data: { session }, error } = await supabase.auth.getSession();
 
         console.log('Session check result:', session ? 'logged in as ' + session.user.email : 'not logged in', error);
@@ -91,34 +119,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.error('Auth initialization error:', err);
       } finally {
         if (mounted) {
-          console.log('Setting loading to false');
           setLoading(false);
         }
       }
     };
 
-    // Initialize immediately
+    // Initialize after setting up listener
     initializeAuth();
-
-    // Listen for subsequent auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event);
-
-        if (!mounted) return;
-
-        setSession(session);
-        setUser(session?.user ?? null);
-
-        if (session?.user) {
-          fetchProfile(session.user.id).then(profileData => {
-            if (mounted) setProfile(profileData);
-          });
-        } else {
-          setProfile(null);
-        }
-      }
-    );
 
     return () => {
       mounted = false;
