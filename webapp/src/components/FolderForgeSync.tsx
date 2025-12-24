@@ -2976,7 +2976,7 @@ export default function FolderForgeSync() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
-              href="https://github.com/Sean4E/folderforge-sync/releases/download/v1.0.0/FolderForge-Sync-Setup-Windows.exe"
+              href="https://github.com/Sean4E/folderforge-sync/releases/download/v1.0.0/FolderForge.Sync.Setup.1.0.0.exe"
               className="px-4 py-2.5 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 rounded-lg text-sm text-blue-400 flex items-center gap-2 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
