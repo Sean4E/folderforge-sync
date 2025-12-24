@@ -149,12 +149,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return { error };
   };
 
+  // Get the base URL (includes base path for GitHub Pages)
+  const getBaseUrl = () => {
+    // Use import.meta.env.BASE_URL which Vite sets from the base config
+    const base = import.meta.env.BASE_URL || '/';
+    return `${window.location.origin}${base.endsWith('/') ? base.slice(0, -1) : base}`;
+  };
+
   // Sign in with Google
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: getBaseUrl(),
       },
     });
     return { error };
@@ -165,7 +172,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: getBaseUrl(),
       },
     });
     return { error };
@@ -198,7 +205,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Reset password
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: `${getBaseUrl()}/auth/reset-password`,
     });
     return { error };
   };
