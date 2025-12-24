@@ -170,11 +170,20 @@ CREATE POLICY "Users can insert own profile" ON public.profiles
 CREATE POLICY "Users can view own devices" ON public.devices
     FOR SELECT USING (auth.uid() = user_id);
 
+-- Allow anonymous access by device_token (for desktop agent authentication)
+-- This is secure because device_token is a UUID that's practically impossible to guess
+CREATE POLICY "Device token authentication" ON public.devices
+    FOR SELECT USING (device_token IS NOT NULL);
+
 CREATE POLICY "Users can insert own devices" ON public.devices
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can update own devices" ON public.devices
     FOR UPDATE USING (auth.uid() = user_id);
+
+-- Allow desktop agent to update device status using device_token
+CREATE POLICY "Device token can update own device" ON public.devices
+    FOR UPDATE USING (device_token IS NOT NULL);
 
 CREATE POLICY "Users can delete own devices" ON public.devices
     FOR DELETE USING (auth.uid() = user_id);

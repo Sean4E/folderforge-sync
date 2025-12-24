@@ -1157,6 +1157,7 @@ const AddDeviceModal = ({
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newDevice, setNewDevice] = useState<Device | null>(null);
+  const [tokenCopied, setTokenCopied] = useState(false);
 
   const handleCreate = async () => {
     if (!name.trim()) {
@@ -1218,12 +1219,22 @@ const AddDeviceModal = ({
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(newDevice.device_token || '');
+                    setTokenCopied(true);
+                    setTimeout(() => setTokenCopied(false), 2000);
                   }}
-                  className="p-2 hover:bg-white/10 rounded-lg text-zinc-400 hover:text-white"
+                  className={`p-2 rounded-lg transition-colors ${
+                    tokenCopied
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : 'hover:bg-white/10 text-zinc-400 hover:text-white'
+                  }`}
+                  title={tokenCopied ? 'Copied!' : 'Copy token'}
                 >
-                  <Copy size={16} />
+                  {tokenCopied ? <Check size={16} /> : <Copy size={16} />}
                 </button>
               </div>
+              {tokenCopied && (
+                <p className="text-emerald-400 text-xs mt-2">Token copied to clipboard!</p>
+              )}
             </div>
 
             <p className="text-zinc-400 text-sm">
