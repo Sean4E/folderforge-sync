@@ -13,6 +13,10 @@ const { createClient } = require('@supabase/supabase-js');
 // CONFIGURATION
 // ============================================================================
 
+// Hardcoded Supabase credentials (these are public anon keys, safe to expose)
+const SUPABASE_URL = 'https://pnwsyusberuhahufvpbt.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBud3N5dXNiZXJ1aGFodWZ2cGJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzNDQ0NjAsImV4cCI6MjA4MTkyMDQ2MH0._VfPFg3xfOxLLDizeZHttLdzAyEe54roVNDm9JVaoyI';
+
 const store = new Store({
   name: 'folderforge-config',
   defaults: {
@@ -20,8 +24,6 @@ const store = new Store({
     deviceId: null,
     deviceName: null,
     defaultPath: '',
-    supabaseUrl: '',
-    supabaseKey: '',
     launchAtStartup: true,
     showNotifications: true,
     minimizeToTray: true,
@@ -42,15 +44,8 @@ let pendingOperations = 0;
 // ============================================================================
 
 function initSupabase() {
-  const url = store.get('supabaseUrl');
-  const key = store.get('supabaseKey');
-
-  if (!url || !key) {
-    console.log('Supabase credentials not configured');
-    return false;
-  }
-
-  supabase = createClient(url, key, {
+  // Use hardcoded credentials - no user configuration needed
+  supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -594,8 +589,6 @@ ipcMain.handle('get-config', () => {
     deviceId: store.get('deviceId'),
     deviceName: store.get('deviceName'),
     defaultPath: store.get('defaultPath'),
-    supabaseUrl: store.get('supabaseUrl'),
-    supabaseKey: store.get('supabaseKey'),
     launchAtStartup: store.get('launchAtStartup'),
     showNotifications: store.get('showNotifications'),
     isOnline,
@@ -603,8 +596,6 @@ ipcMain.handle('get-config', () => {
 });
 
 ipcMain.handle('save-config', async (event, config) => {
-  if (config.supabaseUrl) store.set('supabaseUrl', config.supabaseUrl);
-  if (config.supabaseKey) store.set('supabaseKey', config.supabaseKey);
   if (config.deviceToken) store.set('deviceToken', config.deviceToken);
   if (config.defaultPath !== undefined) store.set('defaultPath', config.defaultPath);
   if (config.launchAtStartup !== undefined) {
@@ -615,8 +606,8 @@ ipcMain.handle('save-config', async (event, config) => {
     store.set('showNotifications', config.showNotifications);
   }
 
-  // Reinitialize connection
-  if (config.supabaseUrl || config.supabaseKey || config.deviceToken) {
+  // Reinitialize connection if device token changed
+  if (config.deviceToken) {
     await reconnect();
   }
 
@@ -636,14 +627,12 @@ ipcMain.handle('select-folder', async () => {
 });
 
 ipcMain.handle('test-connection', async () => {
-  if (!initSupabase()) {
-    return { success: false, error: 'Supabase not configured' };
-  }
+  initSupabase();
 
   const authenticated = await authenticateDevice();
   return {
     success: authenticated,
-    error: authenticated ? null : 'Device authentication failed'
+    error: authenticated ? null : 'Invalid device token. Please check your token from the web app.'
   };
 });
 

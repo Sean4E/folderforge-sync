@@ -233,6 +233,15 @@
       margin-top: 6px;
     }
 
+    .help-link {
+      color: #10b981;
+      text-decoration: none;
+    }
+
+    .help-link:hover {
+      text-decoration: underline;
+    }
+
     .message {
       padding: 12px 16px;
       border-radius: 10px;
@@ -262,6 +271,44 @@
     .actions .btn {
       flex: 1;
     }
+
+    .info-box {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #93c5fd;
+      margin-bottom: 16px;
+    }
+
+    .info-box strong {
+      color: #60a5fa;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .steps {
+      margin-top: 8px;
+    }
+
+    .steps p {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+    }
   </style>
 </head>
 <body>
@@ -290,25 +337,21 @@
     </div>
 
     <div class="card">
-      <div class="card-title">Supabase Configuration</div>
-      <div class="form-group">
-        <label for="supabaseUrl">Supabase URL</label>
-        <input type="text" id="supabaseUrl" placeholder="https://your-project.supabase.co">
-        <p class="help-text">Found in: Supabase Dashboard > Project Settings > API</p>
-      </div>
-      <div class="form-group">
-        <label for="supabaseKey">Supabase Anon Key</label>
-        <input type="password" id="supabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-        <p class="help-text">The "anon public" key from your project settings</p>
-      </div>
-    </div>
+      <div class="card-title">Device Setup</div>
 
-    <div class="card">
-      <div class="card-title">Device Configuration</div>
+      <div class="info-box">
+        <strong>How to get your Device Token:</strong>
+        <div class="steps">
+          <p><span class="step-number">1</span> Sign in at <a href="https://sean4e.github.io/folderforge-sync" class="help-link" target="_blank">FolderForge Sync</a></p>
+          <p><span class="step-number">2</span> Click "Add Device" in the Devices panel</p>
+          <p><span class="step-number">3</span> Copy the generated token</p>
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="deviceToken">Device Token</label>
         <input type="text" id="deviceToken" placeholder="Paste your device token here">
-        <p class="help-text">Get this from the web app after registering this device</p>
+        <p class="help-text">This links your desktop to your FolderForge account</p>
       </div>
       <div class="form-group">
         <label for="defaultPath">Default Folder Path</label>
@@ -348,8 +391,6 @@
       try {
         const config = await window.api.getConfig();
 
-        if (config.supabaseUrl) document.getElementById('supabaseUrl').value = config.supabaseUrl;
-        if (config.supabaseKey) document.getElementById('supabaseKey').value = config.supabaseKey;
         if (config.deviceToken) document.getElementById('deviceToken').value = config.deviceToken;
         if (config.defaultPath) document.getElementById('defaultPath').value = config.defaultPath;
 
@@ -398,6 +439,13 @@
     }
 
     async function testConnection() {
+      const deviceToken = document.getElementById('deviceToken').value.trim();
+
+      if (!deviceToken) {
+        showMessage('Please enter a device token first.', 'error');
+        return;
+      }
+
       try {
         // First save current settings
         await saveSettingsInternal();
@@ -410,7 +458,7 @@
           showMessage('Connection successful! Device authenticated.', 'success');
         } else {
           updateStatus(false);
-          showMessage(result.error || 'Connection failed. Please check your settings.', 'error');
+          showMessage(result.error || 'Connection failed. Please check your device token.', 'error');
         }
       } catch (err) {
         showMessage('Connection test failed: ' + err.message, 'error');
@@ -419,8 +467,6 @@
 
     async function saveSettingsInternal() {
       const config = {
-        supabaseUrl: document.getElementById('supabaseUrl').value.trim(),
-        supabaseKey: document.getElementById('supabaseKey').value.trim(),
         deviceToken: document.getElementById('deviceToken').value.trim(),
         defaultPath: document.getElementById('defaultPath').value.trim(),
         launchAtStartup: document.getElementById('launchAtStartup').checked,
@@ -431,6 +477,13 @@
     }
 
     async function saveSettings() {
+      const deviceToken = document.getElementById('deviceToken').value.trim();
+
+      if (!deviceToken) {
+        showMessage('Please enter a device token.', 'error');
+        return;
+      }
+
       try {
         await saveSettingsInternal();
         showMessage('Settings saved successfully!', 'success');
