@@ -53,8 +53,11 @@ function AppRoutes() {
 }
 
 function App() {
+  // Use base path from Vite config for GitHub Pages deployment
+  const basename = import.meta.env.BASE_URL || '/';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
