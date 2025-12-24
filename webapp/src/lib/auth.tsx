@@ -95,6 +95,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const initializeAuth = async () => {
       try {
+        // Check if we have an OAuth callback with tokens in the URL hash
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token');
+
+        if (accessToken && refreshToken) {
+          console.log('OAuth tokens found in URL, setting session...');
+          // Manually set the session from the URL tokens
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+
+          if (error) {
+            console.error('Error setting session from URL:', error);
+          } else if (data.session) {
+            console.log('Session set successfully:', data.session.user.email);
+            if (mounted) {
+              setSession(data.session);
+              setUser(data.session.user);
+              const profileData = await fetchProfile(data.session.user.id);
+              if (mounted) setProfile(profileData);
+              // Clean up URL
+              window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+            setLoading(false);
+            return;
+          }
+        }
+
         // Get the current session
         const { data: { session }, error } = await supabase.auth.getSession();
 
