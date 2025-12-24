@@ -455,7 +455,11 @@
 
         if (result.success) {
           updateStatus(true);
-          showMessage('Connection successful! Device authenticated.', 'success');
+          showMessage('Connection successful! Closing in 2 seconds...', 'success');
+          // Auto-close after successful connection
+          setTimeout(() => {
+            window.api.closeWindow();
+          }, 2000);
         } else {
           updateStatus(false);
           showMessage(result.error || 'Connection failed. Please check your device token.', 'error');

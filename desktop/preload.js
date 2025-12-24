@@ -19,6 +19,9 @@ contextBridge.exposeInMainWorld('api', {
   testConnection: () => ipcRenderer.invoke('test-connection'),
   disconnect: () => ipcRenderer.invoke('disconnect'),
 
+  // Window control
+  closeWindow: () => ipcRenderer.invoke('close-settings-window'),
+
   // Events from main process
   onSyncStatus: (callback) => {
     ipcRenderer.on('sync-status', (event, status) => callback(status));

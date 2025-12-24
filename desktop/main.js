@@ -647,6 +647,13 @@ ipcMain.handle('disconnect', async () => {
   return { success: true };
 });
 
+ipcMain.handle('close-settings-window', () => {
+  if (settingsWindow) {
+    settingsWindow.close();
+  }
+  return { success: true };
+});
+
 // ============================================================================
 // DIRECTORY SCANNING & PATTERN DETECTION
 // ============================================================================
